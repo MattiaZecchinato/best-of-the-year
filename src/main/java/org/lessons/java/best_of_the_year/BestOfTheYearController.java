@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -41,6 +42,19 @@ public class BestOfTheYearController {
         return "movies";
     }
 
+    @GetMapping("movies/{id}")
+    public String movieDetails(Model model, @PathVariable("id") int movieId) {
+        ArrayList<Movie> moviesList = getBestMovies();
+
+        for (Movie movie : moviesList) {
+            if (movie.getId() == movieId) {
+                model.addAttribute("movieDetails", movie.getTitle());
+            }
+        }
+
+        return "movies";
+    }
+
     @GetMapping("/songs")
     public String songs(Model model) {
         ArrayList<Song> songsList = getBestSongs();
@@ -58,6 +72,19 @@ public class BestOfTheYearController {
         }
 
         model.addAttribute("bestSongsList", bestSongsList);
+
+        return "songs";
+    }
+
+    @GetMapping("songs/{id}")
+    public String songsDetailString(Model model, @PathVariable("id") int songId) {
+        ArrayList<Song> songsList = getBestSongs();
+
+        for (Song song : songsList) {
+            if (song.getId() == songId) {
+                model.addAttribute("songDetails", song.getTitle());
+            }
+        }
 
         return "songs";
     }
